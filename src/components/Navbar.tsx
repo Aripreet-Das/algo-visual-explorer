@@ -1,6 +1,6 @@
 
 import { Link, useLocation } from "react-router-dom";
-import { Code } from "lucide-react";
+import { Code, FilePresentation } from "lucide-react";
 
 const Navbar = () => {
   const location = useLocation();
@@ -37,12 +37,13 @@ const Navbar = () => {
             Graph Coloring
           </Link>
           <a 
-            href="https://github.com" 
+            href="https://www.canva.com/design/DAGi4kZRnhU/ja-rvrEqkszUAat4In0rcg/edit?utm_content=DAGi4kZRnhU&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton" 
             target="_blank" 
             rel="noopener noreferrer" 
-            className="font-medium text-sm text-light-gray hover:text-off-white transition-all"
+            className="font-medium text-sm text-light-gray hover:text-off-white transition-all flex items-center gap-1"
           >
-            GitHub
+            <FilePresentation size={16} />
+            PPT
           </a>
         </div>
       </div>
