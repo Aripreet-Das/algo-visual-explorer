@@ -1,13 +1,14 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { Progress } from "@/components/ui/progress";
 import ChessBoard from '@/components/ChessBoard';
 import AlgorithmControls from '@/components/AlgorithmControls';
 import InfoPanel from '@/components/InfoPanel';
 import { solveNQueens, countNQueensSolutions, NQueensStep } from '@/utils/nQueensAlgorithm';
 import { useToast } from "@/hooks/use-toast";
+import { motion, AnimatePresence } from "framer-motion";
 
 const NQueens = () => {
   const { toast } = useToast();
@@ -22,6 +23,7 @@ const NQueens = () => {
   const [currentRow, setCurrentRow] = useState<number>(-1);
   const animationRef = useRef<number | null>(null);
   const lastStepTimeRef = useRef<number>(0);
+  const [progress, setProgress] = useState(0);
   
   useEffect(() => {
     resetBoard();
@@ -69,17 +71,21 @@ const NQueens = () => {
   }, [isPlaying, steps, currentStepIndex, speed]);
   
   useEffect(() => {
-    if (steps.length > 0 && currentStepIndex >= 0 && currentStepIndex < steps.length) {
-      const step = steps[currentStepIndex];
-      setQueens(step.queens);
-      setCurrentRow(step.currentRow);
+    if (steps.length > 0) {
+      setProgress((currentStepIndex / (steps.length - 1)) * 100);
       
-      if (step.action === 'complete') {
-        toast({
-          title: "Solution Found!",
-          description: "Successfully placed all queens on the board.",
-          variant: "default"
-        });
+      if (currentStepIndex >= 0 && currentStepIndex < steps.length) {
+        const step = steps[currentStepIndex];
+        setQueens(step.queens);
+        setCurrentRow(step.currentRow);
+        
+        if (step.action === 'complete') {
+          toast({
+            title: "Solution Found!",
+            description: "Successfully placed all queens on the board.",
+            variant: "default"
+          });
+        }
       }
     }
   }, [steps, currentStepIndex]);
@@ -94,6 +100,7 @@ const NQueens = () => {
     if (!isManualMode) {
       const newSteps = solveNQueens(boardSize);
       setSteps(newSteps);
+      setProgress(0);
     } else {
       setSteps([]);
     }
@@ -228,17 +235,42 @@ const NQueens = () => {
         </div>
         
         <div className="lg:col-span-2">
-          <div className="card p-8">
-            {currentStepIndex < steps.length && !isManualMode && (
+          <motion.div 
+            className="card p-8"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            {steps.length > 0 && !isManualMode && (
               <div className="mb-6">
-                <div className="bg-dark-blue/30 rounded-md p-4">
-                  <p className="text-sm text-light-gray">
+                <div className="flex justify-between items-center mb-2">
+                  <h3 className="text-sm font-medium text-light-gray">
                     Step {currentStepIndex + 1} of {steps.length}
-                  </p>
-                  <p className="font-medium text-off-white">
-                    {steps[currentStepIndex].message}
-                  </p>
+                  </h3>
+                  <span className="text-xs bg-slate-800 rounded-full px-2 py-0.5">
+                    {Math.round(progress)}%
+                  </span>
                 </div>
+                
+                <Progress 
+                  value={progress} 
+                  className="h-1.5 mb-4" 
+                />
+                
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={currentStepIndex}
+                    initial={{ opacity: 0, y: -5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 5 }}
+                    transition={{ duration: 0.3 }}
+                    className="bg-dark-blue/30 rounded-md p-4"
+                  >
+                    <p className="font-medium text-off-white">
+                      {steps[currentStepIndex].message}
+                    </p>
+                  </motion.div>
+                </AnimatePresence>
               </div>
             )}
             
@@ -263,10 +295,12 @@ const NQueens = () => {
                   onSpeedChange={([newSpeed]) => setSpeed(newSpeed)}
                   disableBackward={currentStepIndex === 0}
                   disableForward={currentStepIndex === steps.length - 1}
+                  currentStep={currentStepIndex + 1}
+                  totalSteps={steps.length}
                 />
               </div>
             )}
-          </div>
+          </motion.div>
         </div>
       </div>
     </div>
