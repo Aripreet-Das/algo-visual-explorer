@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
@@ -87,7 +86,7 @@ const GraphColoring = () => {
         toast({
           title: "Solution Found!",
           description: "Successfully colored all nodes of the graph.",
-          variant: "success"
+          variant: "default"
         });
       }
     }

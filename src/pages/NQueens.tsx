@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
@@ -23,11 +22,9 @@ const NQueens = () => {
   const animationRef = useRef<number | null>(null);
   const lastStepTimeRef = useRef<number>(0);
   
-  // Initialize solution steps when board size changes
   useEffect(() => {
     resetBoard();
     
-    // Calculate the total number of solutions for this board size
     const count = countNQueensSolutions(boardSize);
     setSolutionsCount(count);
     
@@ -37,14 +34,13 @@ const NQueens = () => {
     });
   }, [boardSize]);
   
-  // Animation loop for auto-play
   useEffect(() => {
     if (isPlaying && steps.length > 0) {
       const animate = (timestamp: number) => {
         if (!lastStepTimeRef.current) lastStepTimeRef.current = timestamp;
         
         const elapsed = timestamp - lastStepTimeRef.current;
-        const stepDuration = 1000 / speed; // milliseconds per step
+        const stepDuration = 1000 / speed;
         
         if (elapsed >= stepDuration) {
           lastStepTimeRef.current = timestamp;
@@ -71,19 +67,17 @@ const NQueens = () => {
     };
   }, [isPlaying, steps, currentStepIndex, speed]);
   
-  // Update board state when step changes
   useEffect(() => {
     if (steps.length > 0 && currentStepIndex >= 0 && currentStepIndex < steps.length) {
       const step = steps[currentStepIndex];
       setQueens(step.queens);
       setCurrentRow(step.currentRow);
       
-      // Show toast for significant steps
       if (step.action === 'complete') {
         toast({
           title: "Solution Found!",
           description: "Successfully placed all queens on the board.",
-          variant: "success"
+          variant: "default"
         });
       }
     }
@@ -96,7 +90,6 @@ const NQueens = () => {
     setQueens(emptyBoard);
     setCurrentRow(0);
     
-    // Generate solution steps
     if (!isManualMode) {
       const newSteps = solveNQueens(boardSize);
       setSteps(newSteps);
@@ -116,26 +109,22 @@ const NQueens = () => {
     
     const newQueens = [...queens];
     
-    // Toggle queen at the clicked position
     newQueens[row] = newQueens[row] === col ? -1 : col;
     setQueens(newQueens);
     
-    // Check if the board is solved
     const isSolved = checkBoardSolution(newQueens);
     if (isSolved) {
       toast({
         title: "Congratulations!",
         description: "You've successfully solved the N-Queens problem!",
-        variant: "success"
+        variant: "default"
       });
     }
   };
   
   const checkBoardSolution = (queenPositions: number[]): boolean => {
-    // Check if all rows have a queen
     if (queenPositions.includes(-1)) return false;
     
-    // Check if queens threaten each other
     for (let i = 0; i < queenPositions.length; i++) {
       for (let j = i + 1; j < queenPositions.length; j++) {
         const row1 = i;
@@ -143,10 +132,8 @@ const NQueens = () => {
         const row2 = j;
         const col2 = queenPositions[j];
         
-        // Check if queens are in the same column
         if (col1 === col2) return false;
         
-        // Check if queens are on the same diagonal
         if (Math.abs(row1 - row2) === Math.abs(col1 - col2)) return false;
       }
     }
@@ -161,7 +148,6 @@ const NQueens = () => {
       </h1>
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Left panel - Settings and info */}
         <div className="space-y-8">
           <div className="card">
             <h2 className="text-xl font-semibold mb-4">Settings</h2>
@@ -240,7 +226,6 @@ const NQueens = () => {
           />
         </div>
         
-        {/* Center panel - Chessboard */}
         <div className="lg:col-span-2">
           <div className="card p-8">
             {currentStepIndex < steps.length && !isManualMode && (
