@@ -1,9 +1,11 @@
+
 import { useState, useEffect } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Progress } from "@/components/ui/progress";
 import GraphCanvas from '@/components/GraphCanvas';
 import AlgorithmControls from '@/components/AlgorithmControls';
 import InfoPanel from '@/components/InfoPanel';
@@ -208,6 +210,8 @@ const GraphColoring = () => {
     });
   };
   
+  const progressPercentage = steps.length > 0 ? ((currentStepIndex + 1) / steps.length) * 100 : 0;
+  
   return (
     <div className="container mx-auto py-8 px-4">
       <h1 className="text-3xl md:text-4xl font-bold mb-8 text-center">
@@ -349,13 +353,21 @@ const GraphColoring = () => {
         
         {/* Center panel - Graph Canvas */}
         <div className="lg:col-span-2">
-          <div className="card p-8">
-            {currentStepIndex < steps.length && !isEditMode && (
+          <div className="card overflow-hidden">
+            {steps.length > 0 && !isEditMode && (
               <div className="mb-6">
-                <div className="bg-dark-blue/30 rounded-md p-4">
-                  <p className="text-sm text-light-gray">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-sm text-light-gray">
                     Step {currentStepIndex + 1} of {steps.length}
-                  </p>
+                  </span>
+                  <span className="text-sm text-light-gray">
+                    {Math.round(progressPercentage)}% Complete
+                  </span>
+                </div>
+                
+                <Progress value={progressPercentage} className="h-1.5" />
+                
+                <div className="bg-dark-blue/30 rounded-md p-4 mt-4">
                   <p className="font-medium text-off-white">
                     {steps[currentStepIndex].message}
                   </p>
@@ -372,7 +384,7 @@ const GraphColoring = () => {
               </div>
             )}
             
-            <div className="w-full aspect-video bg-dark-blue rounded-lg border border-midnight-blue">
+            <div className="w-full aspect-video bg-midnight-blue rounded-lg overflow-hidden border border-white/5">
               <GraphCanvas 
                 nodes={graph.nodes}
                 edges={graph.edges}
@@ -385,7 +397,7 @@ const GraphColoring = () => {
             </div>
             
             {!isEditMode && steps.length > 0 && (
-              <div className="mt-8">
+              <div className="mt-8 px-6">
                 <AlgorithmControls 
                   isPlaying={isPlaying}
                   speed={speed}
