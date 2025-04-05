@@ -1,6 +1,6 @@
 
 import { Link, useLocation } from "react-router-dom";
-import { Code, FilePresentation } from "lucide-react";
+import { Code, Presentation } from "lucide-react";
 
 const Navbar = () => {
   const location = useLocation();
@@ -42,7 +42,7 @@ const Navbar = () => {
             rel="noopener noreferrer" 
             className="font-medium text-sm text-light-gray hover:text-off-white transition-all flex items-center gap-1"
           >
-            <FilePresentation size={16} />
+            <Presentation size={16} />
             PPT
           </a>
         </div>
