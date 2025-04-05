@@ -106,17 +106,17 @@
 }
 
 .chess-cell.light {
-  background-color: #d9d7ec;
+  background-color: #FFFFFF;
 }
 
 .chess-cell.dark {
-  background-color: #9896ab;
+  background-color: #000000;
 }
 
 .chess-cell.queen::after {
   content: "♕";
   font-size: 2rem;
-  color: #E94560;
+  color: #8B4513; /* Brown color for queens */
 }
 
 .chess-cell.queen.valid::after {
@@ -137,6 +137,9 @@
   height: 100%;
   background-color: #16213E;
   border-radius: var(--radius);
+  position: relative;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
 }
 
 .graph-node {
@@ -144,15 +147,42 @@
   stroke: white;
   stroke-width: 2px;
   transition: all 0.3s ease;
+  filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.3));
 }
 
 .graph-node.selected {
   fill: #E94560;
+  animation: pulse 1.5s infinite alternate;
+}
+
+@keyframes pulse {
+  0% { 
+    stroke-width: 2px;
+    transform: scale(1);
+  }
+  100% { 
+    stroke-width: 3px;
+    transform: scale(1.1);
+  }
 }
 
 .graph-edge {
   stroke: #B0B0B0;
   stroke-width: 2px;
+  transition: all 0.3s ease;
+}
+
+.graph-edge.highlight {
+  stroke: #E94560;
+  stroke-width: 3px;
+  stroke-dasharray: 5, 5;
+  animation: dash 1s linear infinite;
+}
+
+@keyframes dash {
+  to {
+    stroke-dashoffset: -10;
+  }
 }
 
 /* Custom scrollbar */

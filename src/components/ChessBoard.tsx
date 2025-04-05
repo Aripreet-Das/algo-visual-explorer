@@ -61,7 +61,11 @@ const ChessBoard = ({ size, queens, currentRow = -1, onCellClick, isManual = fal
   return (
     <div 
       className="chess-board" 
-      style={{ "--board-size": size } as React.CSSProperties}
+      style={{ 
+        "--board-size": size,
+        boxShadow: "0 10px 30px rgba(0, 0, 0, 0.25)",
+        border: "2px solid #000000" 
+      } as React.CSSProperties}
     >
       {boardCells}
     </div>
