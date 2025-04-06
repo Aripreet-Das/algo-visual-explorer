@@ -6,6 +6,117 @@ import { ChevronRight, Crown, Code, Search } from "lucide-react";
 const Index = () => {
   const [showMore, setShowMore] = useState(false);
   
+  const nQueensDetailedInfo = `
+    <h3 class="text-xl font-bold mb-4">N-Queens Problem</h3>
+    <p>The N-Queens problem is a classic combinatorial puzzle that asks how to place N chess queens on an N×N chessboard so that no two queens threaten each other. In chess, a queen can attack any piece that lies on the same row, column, or diagonal.</p>
+    
+    <h4 class="text-lg font-semibold mt-6 mb-2">Problem Details</h4>
+    <ul class="list-disc pl-5 space-y-2">
+      <li>Goal: Place N queens on an N×N chessboard so that no queen can attack another queen.</li>
+      <li>Constraints: No two queens can share the same row, column, or diagonal.</li>
+      <li>Historical Significance: Originally proposed for the standard 8×8 chess board as the Eight Queens Puzzle by chess composer Max Bezzel in 1848.</li>
+    </ul>
+    
+    <h4 class="text-lg font-semibold mt-6 mb-2">Mathematical Properties</h4>
+    <ul class="list-disc pl-5 space-y-2">
+      <li>For N=1, there is 1 solution.</li>
+      <li>For N=2 and N=3, there are no solutions.</li>
+      <li>For N=4, there are 2 distinct solutions.</li>
+      <li>For N=8 (standard chessboard), there are 92 distinct solutions.</li>
+      <li>The number of solutions increases rapidly with N.</li>
+    </ul>
+    
+    <h4 class="text-lg font-semibold mt-6 mb-2">Computational Complexity</h4>
+    <ul class="list-disc pl-5 space-y-2">
+      <li>The problem is NP-hard in its generalized form.</li>
+      <li>Backtracking is an efficient algorithm to solve it compared to brute force approaches.</li>
+      <li>The time complexity using backtracking is still exponential: O(N!), but much better than checking all possible board configurations.</li>
+    </ul>
+    
+    <h4 class="text-lg font-semibold mt-6 mb-2">Solving Process with Backtracking</h4>
+    <ol class="list-decimal pl-5 space-y-2">
+      <li>Start placing queens one row at a time.</li>
+      <li>When placing a queen in a row, check if it conflicts with any previously placed queens.</li>
+      <li>If a conflict is found, try the next position in the same row.</li>
+      <li>If no conflict-free position exists in a row, backtrack to the previous row and try a different position for the queen there.</li>
+      <li>Continue until all N queens are placed (solution found) or all possibilities are exhausted.</li>
+    </ol>
+    
+    <h4 class="text-lg font-semibold mt-6 mb-2">Real-world Applications</h4>
+    <p>The N-Queens problem serves as an excellent teaching example for:</p>
+    <ul class="list-disc pl-5 space-y-2">
+      <li>Constraint satisfaction problems</li>
+      <li>Backtracking algorithms</li>
+      <li>Optimization techniques</li>
+    </ul>
+    
+    <p class="mt-4">Similar placement constraint problems appear in:</p>
+    <ul class="list-disc pl-5 space-y-2">
+      <li>Circuit board design</li>
+      <li>Scheduling problems</li>
+      <li>Resource allocation</li>
+    </ul>
+  `;
+  
+  const graphColoringDetailedInfo = `
+    <h3 class="text-xl font-bold mb-4">Graph Coloring Problem</h3>
+    <p>The Graph Coloring Problem involves assigning colors to elements of a graph subject to certain constraints. The most common variant is vertex coloring, where adjacent vertices must have different colors.</p>
+    
+    <h4 class="text-lg font-semibold mt-6 mb-2">Problem Details</h4>
+    <ul class="list-disc pl-5 space-y-2">
+      <li>Goal: Assign colors to each vertex of a graph so that no two adjacent vertices share the same color.</li>
+      <li>Optimization Goal: Minimize the number of colors used.</li>
+      <li>Chromatic Number: The minimum number of colors needed to color a graph G is called its chromatic number, χ(G).</li>
+    </ul>
+    
+    <h4 class="text-lg font-semibold mt-6 mb-2">Graph Types and Their Properties</h4>
+    <ul class="list-disc pl-5 space-y-2">
+      <li>Complete Graph (Kn): Requires exactly n colors (all vertices are adjacent).</li>
+      <li>Bipartite Graph: Requires exactly 2 colors (vertices can be divided into two independent sets).</li>
+      <li>Planar Graphs: Require at most 4 colors (Four Color Theorem).</li>
+      <li>Cycle Graphs:
+        <ul class="list-disc pl-5 mt-1">
+          <li>Even-length cycles need 2 colors.</li>
+          <li>Odd-length cycles need 3 colors.</li>
+        </ul>
+      </li>
+    </ul>
+    
+    <h4 class="text-lg font-semibold mt-6 mb-2">Computational Complexity</h4>
+    <ul class="list-disc pl-5 space-y-2">
+      <li>Determining if a graph can be colored with k colors is NP-complete for k ≥ 3.</li>
+      <li>Finding the chromatic number of a graph is NP-hard.</li>
+      <li>Even approximating the chromatic number within certain factors is NP-hard.</li>
+    </ul>
+    
+    <h4 class="text-lg font-semibold mt-6 mb-2">Solving Process with Backtracking</h4>
+    <ol class="list-decimal pl-5 space-y-2">
+      <li>Start by assigning the first color to the first vertex.</li>
+      <li>Move to the next vertex and assign the first available color that doesn't conflict with its neighbors.</li>
+      <li>If no color is available, backtrack to the previous vertex and try a different color.</li>
+      <li>Continue until all vertices are colored (solution found) or all possibilities are exhausted.</li>
+      <li>To find the minimum number of colors, solve repeatedly with a decreasing number of allowed colors.</li>
+    </ol>
+    
+    <h4 class="text-lg font-semibold mt-6 mb-2">Heuristic Approaches</h4>
+    <p>Several heuristics exist for approximate solutions:</p>
+    <ul class="list-disc pl-5 space-y-2">
+      <li>Greedy Coloring: Process vertices in a specific order, assigning the lowest possible color index at each step.</li>
+      <li>DSatur (Degree of Saturation): Prioritize vertices with more differently-colored neighbors.</li>
+      <li>Welsh-Powell Algorithm: Sort vertices by degree and color them in that order.</li>
+    </ul>
+    
+    <h4 class="text-lg font-semibold mt-6 mb-2">Real-world Applications</h4>
+    <ul class="list-disc pl-5 space-y-2">
+      <li>Scheduling Problems: Assigning time slots without conflicts (e.g., exam scheduling).</li>
+      <li>Register Allocation: Optimizing variable storage in computer programs.</li>
+      <li>Frequency Assignment: Allocating frequencies to radio transmitters to avoid interference.</li>
+      <li>Map Coloring: Ensuring adjacent regions have different colors.</li>
+      <li>Pattern Recognition: Separating different regions in image processing.</li>
+      <li>Sudoku Puzzles: Can be formulated as graph coloring problems.</li>
+    </ul>
+  `;
+  
   return (
     <div className="container mx-auto py-8 px-4">
       {/* Hero Section */}
@@ -17,14 +128,6 @@ const Index = () => {
           <p className="text-light-gray text-lg max-w-xl">
             Explore and understand complex backtracking algorithms through step-by-step interactive visualizations. Perfect for students, educators, and algorithm enthusiasts.
           </p>
-          <div className="flex flex-wrap gap-4 pt-4">
-            <Link to="/n-queens" className="btn-primary flex items-center gap-2">
-              Explore N-Queens <ChevronRight size={20} />
-            </Link>
-            <Link to="/graph-coloring" className="btn-secondary flex items-center gap-2">
-              Try Graph Coloring <ChevronRight size={20} />
-            </Link>
-          </div>
         </div>
         <div className="flex-1 flex justify-center">
           <div className="w-full max-w-md aspect-square relative animate-fade-in">
@@ -64,9 +167,12 @@ const Index = () => {
             <p className="text-light-gray mb-6">
               Place N queens on an N×N chessboard so that no two queens threaten each other.
             </p>
-            <Link to="/n-queens" className="text-bright-coral hover:text-bright-coral/80 flex items-center gap-1 mt-auto">
+            <button 
+              onClick={() => document.getElementById('n-queens-details')?.scrollIntoView({ behavior: 'smooth' })} 
+              className="text-bright-coral hover:text-bright-coral/80 flex items-center gap-1 mt-auto"
+            >
               Learn More <ChevronRight size={16} />
-            </Link>
+            </button>
           </div>
           
           {/* Graph Coloring Feature */}
@@ -78,9 +184,12 @@ const Index = () => {
             <p className="text-light-gray mb-6">
               Assign colors to graph vertices such that no adjacent vertices share the same color.
             </p>
-            <Link to="/graph-coloring" className="text-bright-blue hover:text-bright-blue/80 flex items-center gap-1 mt-auto">
+            <button 
+              onClick={() => document.getElementById('graph-coloring-details')?.scrollIntoView({ behavior: 'smooth' })} 
+              className="text-bright-blue hover:text-bright-blue/80 flex items-center gap-1 mt-auto"
+            >
               Learn More <ChevronRight size={16} />
-            </Link>
+            </button>
           </div>
           
           {/* Backtracking Overview */}
@@ -132,34 +241,29 @@ const Index = () => {
               <li>Finding paths (Maze solving, Hamiltonian Path)</li>
               <li>Game playing (Chess, Checkers)</li>
             </ul>
-            
-            <div className="flex justify-center">
-              <div className="flex gap-4">
-                <Link to="/n-queens" className="btn-primary">
-                  Try N-Queens
-                </Link>
-                <Link to="/graph-coloring" className="btn-secondary">
-                  Try Graph Coloring
-                </Link>
-              </div>
-            </div>
           </div>
         </section>
       )}
       
-      {/* CTA Section */}
-      <section className="py-16 text-center">
-        <div className="mx-auto max-w-3xl glass-panel">
-          <h2 className="text-3xl font-bold mb-6">Ready to Master Backtracking?</h2>
-          <p className="text-light-gray mb-8 max-w-xl mx-auto">
-            Dive into our interactive visualizations and understand these powerful algorithms through hands-on learning.
-          </p>
-          <div className="flex justify-center gap-4">
-            <Link to="/n-queens" className="btn-primary">
-              Start with N-Queens
+      {/* N-Queens Detailed Section */}
+      <section id="n-queens-details" className="py-16">
+        <div className="card p-8">
+          <div dangerouslySetInnerHTML={{ __html: nQueensDetailedInfo }} className="prose prose-invert max-w-none" />
+          <div className="mt-8">
+            <Link to="/n-queens" className="btn-primary inline-flex items-center gap-2">
+              Interactive N-Queens Demo <ChevronRight size={16} />
             </Link>
-            <Link to="/graph-coloring" className="btn-secondary">
-              Explore Graph Coloring
+          </div>
+        </div>
+      </section>
+      
+      {/* Graph Coloring Detailed Section */}
+      <section id="graph-coloring-details" className="py-16">
+        <div className="card p-8">
+          <div dangerouslySetInnerHTML={{ __html: graphColoringDetailedInfo }} className="prose prose-invert max-w-none" />
+          <div className="mt-8">
+            <Link to="/graph-coloring" className="btn-primary inline-flex items-center gap-2">
+              Interactive Graph Coloring Demo <ChevronRight size={16} />
             </Link>
           </div>
         </div>

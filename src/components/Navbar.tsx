@@ -24,18 +24,6 @@ const Navbar = () => {
           >
             Home
           </Link>
-          <Link 
-            to="/n-queens" 
-            className={`font-medium text-sm transition-all ${isActive('/n-queens') ? 'text-bright-coral' : 'text-light-gray hover:text-off-white'}`}
-          >
-            N-Queens
-          </Link>
-          <Link 
-            to="/graph-coloring" 
-            className={`font-medium text-sm transition-all ${isActive('/graph-coloring') ? 'text-bright-coral' : 'text-light-gray hover:text-off-white'}`}
-          >
-            Graph Coloring
-          </Link>
           <a 
             href="https://www.canva.com/design/DAGi4kZRnhU/ja-rvrEqkszUAat4In0rcg/edit?utm_content=DAGi4kZRnhU&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton" 
             target="_blank" 

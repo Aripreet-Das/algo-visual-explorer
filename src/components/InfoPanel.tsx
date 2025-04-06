@@ -11,9 +11,10 @@ interface InfoPanelProps {
     space: string;
   };
   applications: string[];
+  detailedInfo?: string;
 }
 
-const InfoPanel = ({ title, description, pseudocode, complexity, applications }: InfoPanelProps) => {
+const InfoPanel = ({ title, description, pseudocode, complexity, applications, detailedInfo }: InfoPanelProps) => {
   const [expanded, setExpanded] = useState(false);
   
   return (
@@ -45,6 +46,10 @@ const InfoPanel = ({ title, description, pseudocode, complexity, applications }:
                 <li key={index}>{app}</li>
               ))}
             </ul>
+            
+            {detailedInfo && (
+              <div className="mt-6 text-light-gray prose prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: detailedInfo }} />
+            )}
           </div>
         )}
       </div>
