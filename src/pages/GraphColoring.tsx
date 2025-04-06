@@ -6,8 +6,9 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
+import { Slider } from "@/components/ui/slider";
+import { motion } from "framer-motion";
 import GraphCanvas from '@/components/GraphCanvas';
-import AlgorithmControls from '@/components/AlgorithmControls';
 import InfoPanel from '@/components/InfoPanel';
 import { 
   colorGraph, 
@@ -18,7 +19,16 @@ import {
   type GraphStep 
 } from '@/utils/graphColoringAlgorithm';
 import { useToast } from "@/hooks/use-toast";
-import { Clock, Edit3, Trash2 } from 'lucide-react';
+import { 
+  Clock, 
+  Edit3, 
+  Trash2, 
+  Play, 
+  Pause, 
+  SkipBack, 
+  SkipForward, 
+  RotateCcw 
+} from 'lucide-react';
 
 const GraphColoring = () => {
   const { toast } = useToast();
@@ -215,29 +225,29 @@ const GraphColoring = () => {
   return (
     <div className="container mx-auto py-8 px-4">
       <h1 className="text-3xl md:text-4xl font-bold mb-8 text-center">
-        <span className="text-bright-blue">Graph Coloring</span> Problem
+        <span className="text-gradient-primary bg-gradient-to-r from-rose-500 via-purple-500 to-blue-500 bg-clip-text text-transparent">Graph Coloring</span> Problem
       </h1>
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left panel - Settings and info */}
         <div className="space-y-8">
-          <div className="card">
-            <h2 className="text-xl font-semibold mb-4">Settings</h2>
+          <div className="glass-panel shadow-lg border border-white/10 rounded-lg p-6 backdrop-blur-md bg-midnight-blue/80">
+            <h2 className="text-xl font-semibold mb-4 text-gradient bg-gradient-to-r from-white via-white/90 to-white/80 bg-clip-text text-transparent">Settings</h2>
             <div className="space-y-6">
-              <Tabs defaultValue="examples">
-                <TabsList className="grid grid-cols-2">
-                  <TabsTrigger value="examples">Examples</TabsTrigger>
-                  <TabsTrigger value="custom">Custom</TabsTrigger>
+              <Tabs defaultValue="examples" className="w-full">
+                <TabsList className="grid grid-cols-2 w-full mb-4">
+                  <TabsTrigger value="examples" className="data-[state=active]:bg-gradient-to-r from-rose-500 via-purple-500 to-blue-500 data-[state=active]:text-white">Examples</TabsTrigger>
+                  <TabsTrigger value="custom" className="data-[state=active]:bg-gradient-to-r from-rose-500 via-purple-500 to-blue-500 data-[state=active]:text-white">Custom</TabsTrigger>
                 </TabsList>
                 
-                <TabsContent value="examples" className="space-y-4 pt-4">
+                <TabsContent value="examples" className="space-y-4 pt-2 focus-visible:outline-none">
                   <div className="space-y-2">
-                    <Label>Example Graphs</Label>
+                    <Label className="text-light-gray">Example Graphs</Label>
                     <Select 
                       value={selectedExample} 
                       onValueChange={handleExampleSelect}
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className="bg-dark-blue/30 border-white/10">
                         <SelectValue placeholder="Select a graph" />
                       </SelectTrigger>
                       <SelectContent>
@@ -249,19 +259,20 @@ const GraphColoring = () => {
                   </div>
                 </TabsContent>
                 
-                <TabsContent value="custom" className="space-y-4 pt-4">
+                <TabsContent value="custom" className="space-y-4 pt-2 focus-visible:outline-none">
                   <div className="flex items-center space-x-2">
                     <Switch 
                       id="edit-mode" 
                       checked={isEditMode}
                       onCheckedChange={setIsEditMode}
                       disabled={isPlaying}
+                      className="data-[state=checked]:bg-gradient-to-r from-rose-500 to-purple-500"
                     />
-                    <Label htmlFor="edit-mode">Edit Mode</Label>
+                    <Label htmlFor="edit-mode" className="text-light-gray">Edit Mode</Label>
                   </div>
                   
                   {isEditMode && (
-                    <div className="bg-dark-blue/30 rounded-md p-4 space-y-2">
+                    <div className="neo-blur rounded-md p-4 space-y-3">
                       <p className="text-sm text-light-gray">
                         <strong>To add a node:</strong> Click on the canvas
                       </p>
@@ -271,7 +282,7 @@ const GraphColoring = () => {
                       <Button 
                         variant="destructive" 
                         size="sm" 
-                        className="w-full mt-2"
+                        className="w-full mt-2 bg-gradient-to-r from-red-500 to-red-700 hover:from-red-600 hover:to-red-800 transition-all"
                         onClick={handleClearGraph}
                       >
                         <Trash2 className="mr-2 h-4 w-4" /> Clear Graph
@@ -282,12 +293,12 @@ const GraphColoring = () => {
               </Tabs>
               
               <div className="space-y-2">
-                <Label>Number of Colors</Label>
+                <Label className="text-light-gray">Number of Colors</Label>
                 <Select 
                   value={numColors.toString()} 
                   onValueChange={(value) => setNumColors(parseInt(value))}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="bg-dark-blue/30 border-white/10">
                     <SelectValue placeholder="Select number of colors" />
                   </SelectTrigger>
                   <SelectContent>
@@ -300,14 +311,19 @@ const GraphColoring = () => {
                 </Select>
               </div>
               
-              <Button 
-                className="w-full"
-                onClick={handleRunAlgorithm}
-                disabled={isPlaying || isEditMode}
+              <motion.div 
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
-                <Clock className="mr-2 h-4 w-4" />
-                Run Algorithm
-              </Button>
+                <Button 
+                  className="w-full bg-gradient-to-r from-rose-500 via-purple-500 to-blue-500 hover:from-rose-600 hover:via-purple-600 hover:to-blue-600 shadow-lg shadow-purple-500/20 transition-all"
+                  onClick={handleRunAlgorithm}
+                  disabled={isPlaying || isEditMode}
+                >
+                  <Clock className="mr-2 h-4 w-4" />
+                  Run Algorithm
+                </Button>
+              </motion.div>
             </div>
           </div>
           
@@ -353,7 +369,7 @@ const GraphColoring = () => {
         
         {/* Center panel - Graph Canvas */}
         <div className="lg:col-span-2">
-          <div className="card overflow-hidden">
+          <div className="glass-panel shadow-xl backdrop-blur-md bg-midnight-blue/80 border border-white/10 rounded-lg p-6 overflow-hidden">
             {steps.length > 0 && !isEditMode && (
               <div className="mb-6">
                 <div className="flex justify-between items-center mb-2">
@@ -365,9 +381,15 @@ const GraphColoring = () => {
                   </span>
                 </div>
                 
-                <Progress value={progressPercentage} className="h-1.5" />
+                <Progress value={progressPercentage} className="h-2.5 bg-slate-800/50" 
+                  style={{
+                    backgroundImage: 'linear-gradient(to right, #e94560, #9c27b0, #47b5ff)',
+                    backgroundSize: `${progressPercentage}% 100%`,
+                    backgroundRepeat: 'no-repeat'
+                  }}
+                />
                 
-                <div className="bg-dark-blue/30 rounded-md p-4 mt-4">
+                <div className="neo-blur rounded-md p-4 mt-4 border border-white/10">
                   <p className="font-medium text-off-white">
                     {steps[currentStepIndex].message}
                   </p>
@@ -376,7 +398,7 @@ const GraphColoring = () => {
             )}
             
             {isEditMode && (
-              <div className="mb-6 bg-midnight-blue rounded-md p-4 flex items-center gap-2 border border-bright-blue/30">
+              <div className="mb-6 neo-blur rounded-md p-4 flex items-center gap-2 border border-bright-blue/30">
                 <Edit3 className="text-bright-blue h-5 w-5" />
                 <p className="text-sm">
                   Edit Mode: {graph.nodes.length} nodes, {graph.edges.length} edges
@@ -384,7 +406,7 @@ const GraphColoring = () => {
               </div>
             )}
             
-            <div className="w-full aspect-video bg-midnight-blue rounded-lg overflow-hidden border border-white/5">
+            <div className="w-full aspect-video bg-[#0f172b] rounded-lg overflow-hidden border border-white/5 shadow-inner shadow-black/40">
               <GraphCanvas 
                 nodes={graph.nodes}
                 edges={graph.edges}
@@ -397,19 +419,92 @@ const GraphColoring = () => {
             </div>
             
             {!isEditMode && steps.length > 0 && (
-              <div className="mt-8 px-6">
-                <AlgorithmControls 
-                  isPlaying={isPlaying}
-                  speed={speed}
-                  onPlay={() => setIsPlaying(true)}
-                  onPause={() => setIsPlaying(false)}
-                  onReset={resetVisualization}
-                  onStepForward={() => setCurrentStepIndex(prev => Math.min(prev + 1, steps.length - 1))}
-                  onStepBackward={() => setCurrentStepIndex(prev => Math.max(prev - 1, 0))}
-                  onSpeedChange={([newSpeed]) => setSpeed(newSpeed)}
-                  disableBackward={currentStepIndex === 0}
-                  disableForward={currentStepIndex === steps.length - 1}
-                />
+              <div className="mt-8 px-2">
+                <div className="space-y-8">
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center">
+                      <h3 className="font-medium text-off-white text-sm">Animation Speed</h3>
+                      <span className="text-sm text-light-gray">{speed}x</span>
+                    </div>
+                    <Slider 
+                      value={[speed]} 
+                      min={0.5} 
+                      max={3} 
+                      step={0.5} 
+                      onValueChange={([newSpeed]) => setSpeed(newSpeed)}
+                      className="w-full"
+                    />
+                  </div>
+                  
+                  <div className="flex justify-between items-center">
+                    <motion.div
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <Button
+                        size="icon"
+                        variant="outline"
+                        className="h-12 w-12 rounded-full border border-white/10 bg-slate-900/50 hover:bg-slate-800/60"
+                        onClick={() => setCurrentStepIndex(prev => Math.max(prev - 1, 0))}
+                        disabled={currentStepIndex === 0}
+                      >
+                        <SkipBack size={18} />
+                      </Button>
+                    </motion.div>
+                    
+                    <motion.div
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      {isPlaying ? (
+                        <Button
+                          size="lg"
+                          className="h-16 w-16 rounded-full bg-green-500 hover:bg-green-600 shadow-lg shadow-green-500/20 p-0"
+                          onClick={() => setIsPlaying(false)}
+                        >
+                          <Pause size={24} />
+                        </Button>
+                      ) : (
+                        <Button
+                          size="lg"
+                          className="h-16 w-16 rounded-full bg-green-500 hover:bg-green-600 shadow-lg shadow-green-500/20 p-0"
+                          onClick={() => setIsPlaying(true)}
+                        >
+                          <Play size={24} className="ml-1" />
+                        </Button>
+                      )}
+                    </motion.div>
+                    
+                    <motion.div
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <Button
+                        size="icon"
+                        variant="outline"
+                        className="h-12 w-12 rounded-full border border-white/10 bg-slate-900/50 hover:bg-slate-800/60"
+                        onClick={() => setCurrentStepIndex(prev => Math.min(prev + 1, steps.length - 1))}
+                        disabled={currentStepIndex === steps.length - 1}
+                      >
+                        <SkipForward size={18} />
+                      </Button>
+                    </motion.div>
+                  </div>
+                  
+                  <motion.div
+                    whileHover={{ scale: 1.01 }}
+                    whileTap={{ scale: 0.99 }}
+                  >
+                    <Button
+                      variant="outline"
+                      className="w-full flex items-center justify-center gap-2 rounded-md border border-white/10 bg-slate-900/50 hover:bg-slate-800/60 transition-all py-6"
+                      onClick={resetVisualization}
+                    >
+                      <RotateCcw size={16} className="mr-1" />
+                      <span>Reset</span>
+                    </Button>
+                  </motion.div>
+                </div>
               </div>
             )}
           </div>

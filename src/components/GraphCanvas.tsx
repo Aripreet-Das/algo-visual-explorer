@@ -158,14 +158,41 @@ const GraphCanvas = ({
     whiteOutline.appendChild(whiteStop2);
     defs.appendChild(whiteOutline);
     
+    // Create a background gradient
+    const bgGradient = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
+    bgGradient.setAttribute('id', 'bg-gradient');
+    bgGradient.setAttribute('x1', '0%');
+    bgGradient.setAttribute('y1', '0%');
+    bgGradient.setAttribute('x2', '100%');
+    bgGradient.setAttribute('y2', '100%');
+    
+    const bgStop1 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+    bgStop1.setAttribute('offset', '0%');
+    bgStop1.setAttribute('stop-color', '#0f172b');
+    
+    const bgStop2 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+    bgStop2.setAttribute('offset', '100%');
+    bgStop2.setAttribute('stop-color', '#1a2234');
+    
+    bgGradient.appendChild(bgStop1);
+    bgGradient.appendChild(bgStop2);
+    defs.appendChild(bgGradient);
+    
     svg.appendChild(defs);
     
-    // Add pattern rect as background
+    // Add background with gradient
     const bgRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
     bgRect.setAttribute('width', '100%');
     bgRect.setAttribute('height', '100%');
-    bgRect.setAttribute('fill', 'url(#grid)');
+    bgRect.setAttribute('fill', 'url(#bg-gradient)');
     svg.appendChild(bgRect);
+    
+    // Add pattern rect over the gradient
+    const gridRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    gridRect.setAttribute('width', '100%');
+    gridRect.setAttribute('height', '100%');
+    gridRect.setAttribute('fill', 'url(#grid)');
+    svg.appendChild(gridRect);
     
     // Create edges first (to be below nodes)
     edges.forEach((edge) => {
@@ -368,9 +395,20 @@ const GraphCanvas = ({
       
       // Add edit mode indicator
       if (isEditing) {
+        const editBg = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        editBg.setAttribute('x', '10');
+        editBg.setAttribute('y', '5');
+        editBg.setAttribute('width', '380');
+        editBg.setAttribute('height', '24');
+        editBg.setAttribute('rx', '12');
+        editBg.setAttribute('fill', 'rgba(233, 69, 96, 0.2)');
+        editBg.setAttribute('stroke', '#E94560');
+        editBg.setAttribute('stroke-width', '1');
+        svg.appendChild(editBg);
+        
         const editText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-        editText.setAttribute('x', '10');
-        editText.setAttribute('y', '20');
+        editText.setAttribute('x', '20');
+        editText.setAttribute('y', '22');
         editText.setAttribute('fill', '#E94560');
         editText.setAttribute('font-size', '12px');
         editText.textContent = 'Edit Mode: Click to add nodes, click two nodes to connect';

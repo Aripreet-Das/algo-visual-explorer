@@ -78,13 +78,33 @@
   .glass-panel {
     @apply bg-midnight-blue/80 backdrop-blur-md rounded-lg p-6 border border-white/10;
   }
+  
+  .neo-blur {
+    @apply backdrop-blur-xl bg-black/40 border border-white/10;
+  }
+  
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+  }
+  
+  .text-gradient-primary {
+    @apply bg-clip-text text-transparent;
+  }
 
   .algorithm-code {
     @apply bg-dark-blue/50 p-4 rounded-md font-fira-code text-sm text-off-white overflow-x-auto;
   }
+  
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
 }
 
-/* Chess board styles */
 .chess-board {
   display: grid;
   grid-template-columns: repeat(var(--board-size), 1fr);
@@ -149,14 +169,13 @@
   height: 100%;
 }
 
-/* Graph styling */
 .graph-canvas {
   width: 100%;
   height: 100%;
-  background-color: #16213E;
+  background-color: #0f172b;
   border-radius: var(--radius);
   position: relative;
-  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
   transition: all 0.3s ease;
 }
 
@@ -165,7 +184,7 @@
   stroke: white;
   stroke-width: 2px;
   transition: all 0.3s ease;
-  filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.3));
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.5));
 }
 
 .graph-node.selected {
@@ -185,7 +204,7 @@
 }
 
 .graph-edge {
-  stroke: #B0B0B0;
+  stroke: rgba(255, 255, 255, 0.6);
   stroke-width: 2px;
   transition: all 0.3s ease;
 }
@@ -203,7 +222,41 @@
   }
 }
 
-/* Custom scrollbar */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.2s ease-out forwards;
+}
+
+.progress-gradient {
+  background: linear-gradient(to right, #e94560, #9c27b0, #47b5ff);
+  background-size: 200% 100%;
+}
+
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
